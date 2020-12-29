@@ -18,6 +18,21 @@ userTemplate.innerHTML = `
     </style>
 `
 
+const allUsers = [
+    {
+        name: 'Jane',
+        age: 62
+    },
+    {
+        name: 'John',
+        age: 24
+    }, 
+    {
+        name: 'Bill',
+        age: 39
+    }, 
+]
+
 class UserCard extends HTMLElement {
     constructor() {
         super();
@@ -41,11 +56,26 @@ class UserCard extends HTMLElement {
     connectedCallback() {
         this.shadowRoot.querySelector('.age-button').addEventListener('click', () => this.toggleAge());
     }
-
+    
     disconnectedCallback() {
         this.shadowRoot.querySelector('.age-button').removeEventListener();
     }
     
 }
-
 window.customElements.define('user-card', UserCard);
+
+const cardsTemplate = document.createElement('template');
+cardsTemplate.innerHTML = allUsers.map((user) => (
+        `<user-card username=${user.name} age=${user.age}> </user-card>`
+    )).join('');
+
+class Cards extends HTMLElement {
+    constructor() {
+        super();
+
+        this.attachShadow( {mode: 'open'} );
+        this.shadowRoot.appendChild(cardsTemplate.content.cloneNode(true))
+    }
+}
+
+window.customElements.define('all-cards', Cards);
