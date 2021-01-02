@@ -58,16 +58,22 @@ class UserCard extends HTMLElement {
     }
     
     disconnectedCallback() {
-        this.shadowRoot.querySelector('.age-button').removeEventListener();
+        this.shadowRoot.querySelector('.age-button').removeEventListener('click', () => this.toggleAge());
     }
     
 }
 window.customElements.define('user-card', UserCard);
 
 const cardsTemplate = document.createElement('template');
-cardsTemplate.innerHTML = allUsers.map((user) => (
-        `<user-card username=${user.name} age=${user.age}> </user-card>`
-    )).join('');
+cardsTemplate.innerHTML = `
+    <div class="user-list">
+        ${allUsers.map((user) => (
+            `<user-card username=${user.name} age=${user.age}> </user-card>`
+        )).join('')}
+        <button class="add-user-button">Add user</button>
+        <div>Number of users: ${allUsers.length}</div>
+    </div>
+`
 
 class Cards extends HTMLElement {
     constructor() {
@@ -75,6 +81,32 @@ class Cards extends HTMLElement {
 
         this.attachShadow( {mode: 'open'} );
         this.shadowRoot.appendChild(cardsTemplate.content.cloneNode(true))
+    }
+
+    onAddUser() {
+        console.log(allUsers.length)
+        allUsers.push({
+                name: 'Jane',
+                age: 62
+            })
+            this.shadowRoot.querySelector('.user-list').innerHTML = `
+                <div class="user-list">
+                    ${allUsers.map((user) => (
+                        `<user-card username=${user.name} age=${user.age}> </user-card>`
+                    )).join('')}
+                    <button class="add-user-button">Add user</button>
+                    <div>Number of users: ${allUsers.length}</div>
+                </div>
+            `
+            
+    }
+
+    connectedCallback() {
+        this.shadowRoot.querySelector('.add-user-button').addEventListener('click', () => this.onAddUser());
+    }
+
+    disconnectedCallback() {
+        this.shadowRoot.querySelector('.add-user-button').removeEventListener('click', () => this.onAddUser());
     }
 }
 
