@@ -1,12 +1,5 @@
-import { html, LitElement } from 'lit-element';
-console.log(12)
+import { UserHeader } from './components/UserHeader';
+import { UserList } from './components/UserList';
 
-class User extends LitElement {
-    render() {
-        return html`
-            <div>User web component</div>
-        `
-    }
-}
-
-customElements.define('user-custom', User)
+customElements.define('user-header', UserHeader);
+customElements.define('user-list', UserList);
