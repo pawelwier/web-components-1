@@ -33,12 +33,14 @@ export class UserList extends LitElement {
 
     _onAddUser(e) {
         e.preventDefault();
+        if (!this.name || !this.age) {
+            alert('Insert name and age'); 
+            return;
+        };
         this.users = [...this.users, {
                 name: this.name,
                 age: this.age
             }];
-        this.name = '';
-        this.age = '';
     }
 
     _onNameChange(e) {
@@ -52,8 +54,16 @@ export class UserList extends LitElement {
     render() {
         return html`
             <div class="user-list">
-                ${this.users.map(user =>
-                    html`<user-record username=${user.name} age=${user.age}> </user-record>`
+                ${this.users.map((user, index) =>
+                    html`
+                        <user-record 
+                            fontColor=${index % 2 === 0 ? 'black' : '#e8e8e8'} 
+                            backgroundColor=${index % 2 === 0 ? '#e8e8e8' : 'black'} 
+                            username=${user.name} 
+                            age=${user.age}
+                            >
+                        </user-record>
+                    `
                 )}
                 <form class="add-user-form">
                     <div><input placeholder="Name:" type="text" size="10" value=${this.name ? this.name : ''} @change=${this._onNameChange} /></div>

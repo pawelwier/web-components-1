@@ -4,7 +4,9 @@ export class User extends LitElement {
     static get properties() {
         return {
             username: {type: String},
-            age: {type: Number}
+            age: {type: Number},
+            backgroundColor: {type: String},
+            fontColor: {type: String}
         }
     }
 
@@ -26,7 +28,8 @@ export class User extends LitElement {
                 width: 400px;
                 border-bottom: 2px black solid;
                 margin-bottom: 10px;
-                background-color: #e8e8e8;
+                background-color: ${this.backgroundColor};
+                color: ${this.fontColor};
                 padding:3px;
             }
         </style>
