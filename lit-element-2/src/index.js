@@ -33,21 +33,15 @@ class TodoView extends LitElement {
             this._onAddTodo();
         }
     }
-    
 
     _onClearComplete() {
         this.todos = this.todos.filter(todo => !todo.complete);
     }
 
-    _onTodoUpdate(todo) {
-        const newTodos = this.todos.map(todo => {
-            todo.task = 'sd'
-        })
-
-        console.log(newTodos);
-        // this.todos = this.todos.map(todo => {
-            // todo.complete = !todo.complete;
-        // })
+    _onTodoUpdate(updatedTodo, complete) {
+        this.todos = this.todos.map(todo => (
+            todo === updatedTodo ? {...todo, complete} : todo
+        ));
     }
 
     render() {
@@ -66,15 +60,18 @@ class TodoView extends LitElement {
                         <input
                             type="checkbox"
                             ?checked="${todo.complete}" 
-                            @change="${() => this._onTodoUpdate(todo)}"
+                            @change="${(e) => this._onTodoUpdate(todo, e.target.checked)}"
                         />
                     </div>
                 `
             })}
         </div>
         <div>
-            <input type="radio" />Complete
-            <input type="radio" />Incomplete
+            <select>
+                <option value="All">All</option>
+                <option value="Complete">Complete</option>
+                <option value="Incomplete">Incomplete</option>
+            </select>
             <button @click="${this._onClearComplete}">Clear complete</button>
         </div>
         `
