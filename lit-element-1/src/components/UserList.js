@@ -29,10 +29,18 @@ export class UserList extends LitElement {
                 age: 39
             }, 
         ];
+        this.name = '';
+        this.age = '';
+
+        this.addEventListener('delete-event', () => {
+            console.log(234);
+            // console.log(e.detail.text());
+        })
     }
 
+    
+
     _onAddUser(e) {
-        e.preventDefault();
         if (!this.name || !this.age) {
             alert('Insert name and age'); 
             return;
@@ -41,6 +49,8 @@ export class UserList extends LitElement {
                 name: this.name,
                 age: this.age
             }];
+        this.name = '';
+        this.age = '';
     }
 
     _onNameChange(e) {
@@ -49,6 +59,12 @@ export class UserList extends LitElement {
     
     _onAgeChange(e) {
         this.age = e.target.value
+    }
+
+    _onHitEnter(e) {
+        if (e.key === 'Enter') {
+            this._onAddUser();
+        }
     }
 
     render() {
@@ -65,11 +81,31 @@ export class UserList extends LitElement {
                         </user-record>
                     `
                 )}
-                <form class="add-user-form">
-                    <div><input placeholder="Name:" type="text" size="10" value=${this.name ? this.name : ''} @change=${this._onNameChange} /></div>
-                    <div><input placeholder="Age:" type="text" size="10" value=${this.age ? this.age : ''} @change=${this._onAgeChange} /></div>
-                    <button @click="${this._onAddUser}" class="add-user-button" type="submit">Add user</button>
-                </form>
+                <div class="add-user-form" @keyup="${this._onHitEnter}">
+                    <div>
+                        <input 
+                            placeholder="Name:" 
+                            type="text" 
+                            size="10" 
+                            value=${this.name} 
+                            @change="${this._onNameChange} "
+                        />
+                    </div>
+                    <div>
+                        <input 
+                            placeholder="Age:" 
+                            type="text" size="10" 
+                            value="${this.age}"
+                            @change="${this._onAgeChange} "
+                        />
+                    </div>
+                    <button 
+                        @click="${this._onAddUser}" 
+                        class="add-user-button"
+                    >
+                    Add user
+                    </button>
+                </div>
                 <div>Number of users: ${this.users.length}</div>
             </div>
             <style>
