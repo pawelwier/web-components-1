@@ -1,4 +1,5 @@
-import { html, LitElement } from 'lit-element';
+import { html, LitElement, css } from 'lit-element';
+import { v4 as uuidv4 } from 'uuid';
 
 import { User } from './User';
 
@@ -13,32 +14,41 @@ export class UserList extends LitElement {
         }
     }
 
+    static get styles() {
+        return css`
+            .add-user-form {
+                display: grid;
+                grid-template-columns: 2fr 2fr 1fr;
+                width: 400px;
+                margin-bottom: 10px;
+                padding:3px;
+            }
+        `
+    }
+
     constructor() {
         super();
         this.users = [
             {
                 name: 'Jane',
-                age: 62
+                age: 62,
+                id: uuidv4()
             },
             {
                 name: 'John',
-                age: 24
+                age: 24,
+                id: uuidv4()
             }, 
             {
                 name: 'Bill',
-                age: 39
+                age: 39,
+                id: uuidv4()
             }, 
         ];
         this.name = '';
         this.age = '';
-
-        this.addEventListener('delete-event', () => {
-            console.log(234);
-            // console.log(e.detail.text());
-        })
+        this.id = '';
     }
-
-    
 
     _onAddUser(e) {
         if (!this.name || !this.age) {
@@ -47,7 +57,8 @@ export class UserList extends LitElement {
         };
         this.users = [...this.users, {
                 name: this.name,
-                age: this.age
+                age: parseInt(this.age),
+                id: this.id = uuidv4()
             }];
         this.name = '';
         this.age = '';
@@ -67,9 +78,13 @@ export class UserList extends LitElement {
         }
     }
 
+    _onDeleteUser(e) {
+        this.users = this.users.filter(user => user.id !== e.detail.id);
+    }
+
     render() {
         return html`
-            <div class="user-list">
+            <div @delete-event="${this._onDeleteUser}" class="user-list">
                 ${this.users.map((user, index) =>
                     html`
                         <user-record 
@@ -77,6 +92,7 @@ export class UserList extends LitElement {
                             backgroundColor=${index % 2 === 0 ? '#e8e8e8' : 'black'} 
                             username=${user.name} 
                             age=${user.age}
+                            id=${user.id}
                             >
                         </user-record>
                     `
@@ -87,8 +103,8 @@ export class UserList extends LitElement {
                             placeholder="Name:" 
                             type="text" 
                             size="10" 
-                            .value=${this.name} 
-                            @change="${this._onNameChange} "
+                            .value="${this.name}" 
+                            @change="${this._onNameChange}"
                         />
                     </div>
                     <div>
@@ -96,7 +112,7 @@ export class UserList extends LitElement {
                             placeholder="Age:" 
                             type="text" size="10" 
                             .value="${this.age}"
-                            @change="${this._onAgeChange} "
+                            @change="${this._onAgeChange}"
                         />
                     </div>
                     <button 
@@ -108,15 +124,6 @@ export class UserList extends LitElement {
                 </div>
                 <div>Number of users: ${this.users.length}</div>
             </div>
-            <style>
-                .add-user-form {
-                    display: grid;
-                    grid-template-columns: 2fr 2fr 1fr;
-                    width: 400px;
-                    margin-bottom: 10px;
-                    padding:3px;
-                }
-            </style>
         `
     }
 }
