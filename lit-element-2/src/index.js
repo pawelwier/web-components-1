@@ -47,7 +47,7 @@ class TodoView extends LitElement {
     render() {
         return html`
         <div @keyup="${this._onHitEnter}">
-            <input value="${this.task}" @change="${this._onTaskInsert}" />
+            <input .value="${this.task}" @change="${this._onTaskInsert}" />
             <button @click="${this._onAddTodo}">
                 Add todo
             </button>

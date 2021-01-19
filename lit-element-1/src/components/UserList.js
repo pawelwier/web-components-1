@@ -87,7 +87,7 @@ export class UserList extends LitElement {
                             placeholder="Name:" 
                             type="text" 
                             size="10" 
-                            value=${this.name} 
+                            .value=${this.name} 
                             @change="${this._onNameChange} "
                         />
                     </div>
@@ -95,7 +95,7 @@ export class UserList extends LitElement {
                         <input 
                             placeholder="Age:" 
                             type="text" size="10" 
-                            value="${this.age}"
+                            .value="${this.age}"
                             @change="${this._onAgeChange} "
                         />
                     </div>
