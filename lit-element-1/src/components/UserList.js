@@ -50,11 +50,19 @@ export class UserList extends LitElement {
         this.id = '';
     }
 
+    createRenderRoot() {
+        return this;
+    }
+
     _onAddUser(e) {
         if (!this.name || !this.age) {
             alert('Insert name and age'); 
             return;
         };
+        if (isNaN(this.age)) {
+            alert('Age need to be a number'); 
+            return;
+        }
         this.users = [...this.users, {
                 name: this.name,
                 age: parseInt(this.age),
@@ -97,27 +105,26 @@ export class UserList extends LitElement {
                         </user-record>
                     `
                 )}
-                <div class="add-user-form" @keyup="${this._onHitEnter}">
-                    <div>
+                <div class="add-user-form mt-4" @keyup="${this._onHitEnter}">
+                    <div style="width: 70%">
                         <input 
+                            class="form-control"
                             placeholder="Name:" 
-                            type="text" 
-                            size="10" 
+                            type="text"
                             .value="${this.name}" 
                             @change="${this._onNameChange}"
                         />
-                    </div>
-                    <div>
                         <input 
+                            class="form-control"
                             placeholder="Age:" 
-                            type="text" size="10" 
+                            type="text"
                             .value="${this.age}"
                             @change="${this._onAgeChange}"
                         />
                     </div>
                     <button 
                         @click="${this._onAddUser}" 
-                        class="add-user-button"
+                        class="btn btn-primary add-user-button"
                     >
                     Add user
                     </button>
